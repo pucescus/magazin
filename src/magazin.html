@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Магазин строительных материалов</title>
+</head>
+<body>
+    <h1>Магазин строительных материалов</h1>
+
+    <h2>Добавить товар</h2>
+    <form action="/добавитьТовар" method="post">
+        <input type="text" name="название" placeholder="Название товара"><br>
+        <input type="text" name="описание" placeholder="Описание товара"><br>
+        <input type="number" name="цена" step="0.01" placeholder="Цена товара"><br>
+        <input type="number" name="количествоВОстатке" placeholder="Количество в наличии"><br>
+        <button type="submit">Добавить</button>
+    </form>
+
+    <h2>Список товаров</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Название</th>
+                <th>Описание</th>
+                <th>Цена</th>
+                <th>Количество в наличии</th>
+                <th>Добавить в корзину</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="товар : ${товары}">
+                <td th:text="${товар.id}"></td>
+                <td th:text="${товар.название}"></td>
+                <td th:text="${товар.описание}"></td>
+                <td th:text="${товар.цена}"></td>
+                <td th:text="${товар.количествоВОстатке}"></td>
+                <td>
+                    <form th:action="@{/добавитьВКорзину/{id}(id=${товар.id})}" method="post">
+                        <button type="submit">Добавить</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

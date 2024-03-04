@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Магазин строительных материалов</title>
+</head>
+<body>
+    <h1>Список товаров</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Название</th>
+                <th>Описание</th>
+                <th>Цена</th>
+                <th>Количество в наличии</th>
+                <th>Количество в корзине</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="товар : ${товары}">
+                <td th:text="${товар.id}"></td>
+                <td th:text="${товар.название}"></td>
+                <td th:text="${товар.описание}"></td>
+                <td th:text="${товар.цена}"></td>
+                <td th:text="${товар.количествоВОстатке}"></td>
+                <td th:text="${товар.количествоВКорзине}"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
