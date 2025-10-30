@@ -1,0 +1,34 @@
+// Попытка считать три числа
+            double a, b, c;
+            bool okA = double.TryParse(textBoxA.Text.Replace(',', '.'), out a);
+            bool okB = double.TryParse(textBoxB.Text.Replace(',', '.'), out b);
+            bool okC = double.TryParse(textBoxC.Text.Replace(',', '.'), out c);
+
+            if (!okA  !okB  !okC)
+            {
+                MessageBox.Show("Пожалуйста, введите корректные числа для a, b и c.", "Ошибка ввода",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Условие: если a >= b >= c — удвоить; иначе — заменить абсолютными значениями
+            if (a >= b && b >= c)
+            {
+                a *= 2;
+                b *= 2;
+                c *= 2;
+            }
+            else
+            {
+                a = Math.Abs(a);
+                b = Math.Abs(b);
+                c = Math.Abs(c);
+            }
+
+            // Вывод результата (с форматированием)
+            labelResultA.Text = "a = " + a.ToString();
+            labelResultB.Text = "b = " + b.ToString();
+            labelResultC.Text = "c = " + c.ToString();
+        }
+    }
+}
