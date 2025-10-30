@@ -1,0 +1,115 @@
+using System;
+using System.Windows.Forms;
+
+namespace SumOfDigitsWinForms
+{
+    static class Program
+    {
+        [STAThread]
+        static void Main()
+        {
+            Application.SetHighDpiMode(HighDpiMode.SystemAware);
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new MainForm());
+        }
+    }
+}
+using System;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace SumOfDigitsWinForms
+{
+    public class MainForm : Form
+    {
+        private Label lblPrompt;
+        private TextBox txtNumber;
+        private Button btnCompute;
+        private Label lblResult;
+        private Label lblNote;
+
+        public MainForm()
+        {
+            InitializeComponent();
+        }
+
+        private void InitializeComponent()
+        {
+            this.Text = "Сумма цифр (n ≤ 100)";
+            this.ClientSize = new Size(360, 160);
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+
+            lblPrompt = new Label()
+            {
+                Text = "Введите натуральное число n (≤ 100):",
+                Location = new Point(12, 15),
+                AutoSize = true
+            };
+
+            txtNumber = new TextBox()
+            {
+                Location = new Point(15, 40),
+                Width = 120
+            };
+
+            btnCompute = new Button()
+            {
+                Text = "Вычислить сумму цифр",
+                Location = new Point(150, 37),
+                AutoSize = true
+            };
+            btnCompute.Click += BtnCompute_Click;
+
+            lblResult = new Label()
+            {
+                Text = "Сумма цифр: ",
+                Location = new Point(12, 80),
+                AutoSize = true,
+                Font = new Font(FontFamily.GenericSansSerif, 10, FontStyle.Bold)
+            };
+
+            lblNote = new Label()
+            {
+                Text = "Программа принимает целые числа 0..100 (натуральные обычно ≥1).",
+                Location = new Point(12, 110),
+                AutoSize = true,
+                ForeColor = Color.Gray
+            };
+
+            this.Controls.Add(lblPrompt);
+            this.Controls.Add(txtNumber);
+            this.Controls.Add(btnCompute);
+            this.Controls.Add(lblResult);
+            this.Controls.Add(lblNote);
+        }
+
+        private void BtnCompute_Click(object sender, EventArgs e)
+        {
+            // Валидация
+            if (!int.TryParse(txtNumber.Text.Trim(), out int n))
+            {
+                MessageBox.Show("Введите целое число.", "Ошибка ввода", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Проверим границы: n ≤ 100 и неотрицательное (или можно потребовать >0)
+            if (n < 0 || n > 100)
+            {
+                MessageBox.Show("Число должно быть в диапазоне 0..100 (или 1..100, если требуются только натуральные).",
+                                "Ошибка границ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Вычисление суммы цифр — классический способ: делим на 10
+            int temp = Math.Abs(n); // на случай, если кто-то ввёл отрицательное (мы уже запретили, но на будущее)
+            int sum = 0;
+            if (temp == 0) sum = 0; // если считать сумму цифр 0 как 0
+            while (temp > 0)
+            {
+                sum += temp % 10;
+                temp /= 10;
+            }
+
+            lblResult.Text = $"Сумма цифр: {sum}";
