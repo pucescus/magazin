@@ -1,0 +1,129 @@
+using System;
+using System.Globalization;
+using System.Windows.Forms;
+using System.Drawing;
+
+namespace Task77g
+{
+    public class Form1 : Form
+    {
+        // Элементы формы
+        private Label lblN, lblResult;
+        private TextBox txtN;
+        private Button btnCalculate, btnExample;
+
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void InitializeComponent()
+        {
+            // Настройки формы
+            this.Text = "Задача №77 (г) — Сумма с синусами";
+            this.ClientSize = new Size(420, 200);
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+
+            // Создание элементов
+            lblN = new Label()
+            {
+                Text = "Введите n:",
+                Location = new Point(20, 20),
+                AutoSize = true
+            };
+
+            txtN = new TextBox()
+            {
+                Location = new Point(120, 16),
+                Width = 100,
+                Text = "3" // значение по умолчанию
+            };
+
+            btnCalculate = new Button()
+            {
+                Text = "Вычислить",
+                Location = new Point(240, 15),
+                Width = 140,
+                Height = 35
+            };
+
+            btnExample = new Button()
+            {
+                Text = "Пример n=3",
+                Location = new Point(240, 60),
+                Width = 140,
+                Height = 35
+            };
+
+            lblResult = new Label()
+            {
+                Text = "Результат появится здесь",
+                Location = new Point(20, 120),
+                Size = new Size(370, 40),
+                BorderStyle = BorderStyle.FixedSingle,
+                TextAlign = ContentAlignment.MiddleCenter
+            };
+
+            // Добавление элементов на форму
+            this.Controls.Add(lblN);
+            this.Controls.Add(txtN);
+            this.Controls.Add(btnCalculate);
+            this.Controls.Add(btnExample);
+            this.Controls.Add(lblResult);
+
+            // Обработчики событий
+            btnCalculate.Click += BtnCalculate_Click;
+            btnExample.Click += BtnExample_Click;
+        }
+
+        // Кнопка "Пример"
+        private void BtnExample_Click(object sender, EventArgs e)
+        {
+            txtN.Text = "3";
+            lblResult.Text = "Пример загружен. Нажмите «Вычислить».";
+        }
+
+        // Кнопка "Вычислить"
+        private void BtnCalculate_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int n = int.Parse(txtN.Text);
+                if (n <= 0)
+                {
+                    MessageBox.Show("n должно быть натуральным числом (n > 0).", "Ошибка");
+                    return;
+                }
+
+                double S = 0.0;
+
+                for (int i = 1; i <= n; i++)
+                {
+                    double sumSin = 0.0;
+
+                    for (int j = 1; j <= i; j++)
+                    {
+                        sumSin += Math.Sin(j); // j в радианах
+                    }
+
+                    S += 1.0 / sumSin;
+                }
+
+                lblResult.Text = $"S = {S:F6}";
+            }
+            catch
+            {
+                MessageBox.Show("Ошибка ввода! Введите целое число n.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        // Точка входа
+        [STAThread]
+        static void Main()
+        {
+            Application.EnableVisualStyles();
+            Application.Run(new Form1());
+        }
+    }
+}
