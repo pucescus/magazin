@@ -1,0 +1,143 @@
+using System;
+using System.Globalization;
+using System.Windows.Forms;
+using System.Drawing;
+
+namespace Task66App
+{
+    public class Form1 : Form
+    {
+        // Объявляем элементы
+        private Label lblK, lblM, lblX, lblY, lblZ, lblResult;
+        private TextBox txtK, txtM, txtX, txtY, txtZ;
+        private Button btnCalculate, btnExample;
+
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void InitializeComponent()
+        {
+            // Настройка формы
+            this.Text = "Задача №66 — работа с условиями";
+            this.ClientSize = new Size(420, 320);
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+
+            // Создание элементов
+            lblK = new Label() { Text = "k:", Location = new Point(20, 20), AutoSize = true };
+            txtK = new TextBox() { Location = new Point(60, 16), Width = 100 };
+
+            lblM = new Label() { Text = "m:", Location = new Point(20, 60), AutoSize = true };
+            txtM = new TextBox() { Location = new Point(60, 56), Width = 100 };
+
+            lblX = new Label() { Text = "x:", Location = new Point(20, 100), AutoSize = true };
+            txtX = new TextBox() { Location = new Point(60, 96), Width = 100 };
+
+            lblY = new Label() { Text = "y:", Location = new Point(20, 140), AutoSize = true };
+            txtY = new TextBox() { Location = new Point(60, 136), Width = 100 };
+
+            lblZ = new Label() { Text = "z:", Location = new Point(20, 180), AutoSize = true };
+            txtZ = new TextBox() { Location = new Point(60, 176), Width = 100 };
+
+            btnCalculate = new Button() { Text = "Вычислить", Location = new Point(200, 16), Width = 180, Height = 40 };
+            btnExample = new Button() { Text = "Пример", Location = new Point(200, 66), Width = 180, Height = 40 };
+
+            lblResult = new Label()
+            {
+                Text = "Результат появится здесь.",
+                Location = new Point(20, 230),
+                Size = new Size(380, 60),
+                BorderStyle = BorderStyle.FixedSingle
+            };
+
+            // Добавляем элементы на форму
+            this.Controls.Add(lblK);
+            this.Controls.Add(txtK);
+            this.Controls.Add(lblM);
+            this.Controls.Add(txtM);
+            this.Controls.Add(lblX);
+            this.Controls.Add(txtX);
+            this.Controls.Add(lblY);
+            this.Controls.Add(txtY);
+            this.Controls.Add(lblZ);
+            this.Controls.Add(txtZ);
+            this.Controls.Add(btnCalculate);
+            this.Controls.Add(btnExample);
+            this.Controls.Add(lblResult);
+
+            // События кнопок
+            btnCalculate.Click += BtnCalculate_Click;
+            btnExample.Click += BtnExample_Click;
+
+            // Значения по умолчанию
+            txtK.Text = "3";
+            txtM.Text = "2";
+            txtX.Text = "-1.5";
+            txtY.Text = "1";
+            txtZ.Text = "0.2";
+        }
+
+        // Кнопка "Пример"
+        private void BtnExample_Click(object sender, EventArgs e)
+        {
+            txtK.Text = "3";
+            txtM.Text = "2";
+            txtX.Text = "-1.5";
+            txtY.Text = "1";
+            txtZ.Text = "0.2";
+            lblResult.Text = "Пример загружен. Нажмите «Вычислить».";
+        }
+
+        // Кнопка "Вычислить"
+        private void BtnCalculate_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Считываем значения
+                int k = int.Parse(txtK.Text);
+                int m = int.Parse(txtM.Text);
+                double x = double.Parse(txtX.Text, CultureInfo.InvariantCulture);
+                double y = double.Parse(txtY.Text, CultureInfo.InvariantCulture);
+                double z = double.Parse(txtZ.Text, CultureInfo.InvariantCulture);
+
+                double m2 = Math.Pow(m, 2);
+
+                // Условия
+                if (k < m2)
+                {
+                    x = Math.Abs(x);
+                    y -= 0.5;
+                    z -= 0.5;
+}
+                else if (k == m2)
+                {
+                    y = Math.Abs(y);
+                    x -= 0.5;
+                    z -= 0.5;
+                }
+                else // k > m²
+                {
+                    z = Math.Abs(z);
+                    x -= 0.5;
+                    y -= 0.5;
+                }
+
+                // Вывод результата
+                lblResult.Text = $"x = {x:F2},  y = {y:F2},  z = {z:F2}";
+            }
+            catch
+            {
+                MessageBox.Show("Ошибка ввода! Проверьте, что введены числа.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        [STAThread]
+        static void Main()
+        {
+            Application.EnableVisualStyles();
+            Application.Run(new Form1());
+        }
+    }
+}
