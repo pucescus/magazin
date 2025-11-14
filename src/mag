@@ -1,0 +1,94 @@
+ 
+# Список товаров 
+products = { 
+    1: {"name": "Ноутбук", "price": 50000, "stock": 5}, 
+    2: {"name": "Смартфон", "price": 20000, "stock": 10}, 
+    3: {"name": "Планшет", "price": 15000, "stock": 7}, 
+    4: {"name": "Наушники", "price": 3000, "stock": 15}, 
+} 
+ 
+# Корзина пользователя 
+cart = {} 
+ 
+def show_products(): 
+    print("\nДоступные товары:") 
+    for id, info in products.items(): 
+        print(f"{id}. {info['name']} - {info['price']} руб. (В наличии: {info['stock']})") 
+ 
+def add_to_cart(): 
+    try: 
+        product_id = int(input("Введите номер товара, который хотите добавить: ")) 
+        if product_id in products: 
+            quantity = int(input("Введите количество: ")) 
+            if quantity <= 0: 
+                print("Количество должно быть больше нуля.") 
+                return 
+            if quantity > products[product_id]["stock"]: 
+                print("Извините, недостаточно товара на складе.") 
+                return 
+            # Добавляем в корзину 
+            if product_id in cart: 
+                cart[product_id] += quantity 
+            else: 
+                cart[product_id] = quantity 
+            print(f"Добавлено {quantity} x {products[product_id]['name']} в корзину.") 
+        else: 
+            print("Неверный номер товара.") 
+    except ValueError: 
+        print("Пожалуйста, введите правильное число.") 
+ 
+def view_cart(): 
+    if not cart: 
+        print("Ваша корзина пуста.") 
+        return 
+    print("\nВаша корзина:") 
+    total = 0 
+    for id, qty in cart.items(): 
+        product = products[id] 
+        subtotal = product["price"] * qty 
+        total += subtotal 
+        print(f"{product['name']} | {qty} шт. | {subtotal} руб.") 
+    print(f"Общая сумма: {total} руб.") 
+ 
+def place_order(): 
+    if not cart: 
+        print("Ваша корзина пуста. Добавьте товары перед оформлением заказа.") 
+        return 
+    view_cart() 
+    confirm = input("Хотите оформить заказ? (да/нет): ").lower() 
+    if confirm == "да": 
+        # Обновляем наличие товара 
+        for id, qty in cart.items(): 
+            products[id]["stock"] -= qty 
+        print("Спасибо за заказ! Он успешно оформлен.") 
+        cart.clear() 
+    else: 
+        print("Заказ отменен.") 
+ 
+def main(): 
+    while True: 
+        print("\n--- Онлайн магазин ---") 
+        print("1. Посмотреть товары") 
+        print("2. Добавить товар в корзину") 
+        print("3. Посмотреть корзину") 
+        print("4. Оформить заказ") 
+        print("5. Выйти") 
+        choice = input("Выберите действие: ") 
+ 
+        if choice == "1": 
+            show_products() 
+        elif choice == "2": 
+            show_products() 
+            add_to_cart() 
+        elif choice == "3": 
+            view_cart() 
+        elif choice == "4": 
+            place_order() 
+        elif choice == "5": 
+            print("Спасибо за посещение! До свидания.") 
+            break 
+        else: 
+            print("Неверный выбор. Попробуйте снова.") 
+ 
+if name == "__main__": 
+    main()
